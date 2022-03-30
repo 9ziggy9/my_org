@@ -1,0 +1,13 @@
+:PROPERTIES:
+:ID:       38f24d76-f98d-466d-b063-56984e1dbfe7
+:END:
+#+title: Programming Languages
+* Languages I Know
+- [[id:ad54a291-32ef-4dea-9682-f21a17281595][C]] 
+- [[id:438d0f95-57ae-4c7e-bae5-b8b01bc04aa0][Python]] 
+- [[id:65f2663a-95fa-464e-a326-e8e1a93c1830][Emacs Lisp]]   
+- [[id:8f7a2346-7211-4b22-9c9c-94e5cb30a8e1][Javascript]]
+
+* Languages I Am Learning
+- [[id:e35e27f8-fb75-49cb-b92b-f68e77002ab5][Haskell]]
+- [[id:d366063c-5daf-4cd3-9f87-146009a95a07][Golang]] 

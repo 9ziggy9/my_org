@@ -1,0 +1,5 @@
+:PROPERTIES:
+:ID:       d366063c-5daf-4cd3-9f87-146009a95a07
+:END:
+#+title: Golang
+
