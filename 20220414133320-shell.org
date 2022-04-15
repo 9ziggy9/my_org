@@ -30,7 +30,7 @@ while getopts "a:bc:" opt; do
     case "${opt}" in
           a) printf 'Got a: "%s"\n' "$OPTARG" ;;
           b) printf "I takes me no arguments" ;;
-          c) printf 'Got b: "%s"\n' "$OPTARG" ;;
+          c) printf 'Got c: "%s"\n' "$OPTARG" ;;
           *) usage
     esac
 done
@@ -42,7 +42,7 @@ while getopts ":a:bc:" opt; do
     case "${opt}" in
           a) printf 'Got a: "%s"\n' "$OPTARG" ;;
           b) printf "I takes me no arguments" ;;
-          c) printf 'Got b: "%s"\n' "$OPTARG" ;;
+          c) printf 'Got c: "%s"\n' "$OPTARG" ;;
           :) echo 'missing argument!' >&2
             exit 1 ;;
           \?) echo 'invalid option!' >&2
@@ -50,3 +50,28 @@ while getopts ":a:bc:" opt; do
     esac
 done
 #+END_SRC
+
+** OPTIND and additional parameters
+getopt increments a variable called $OPTIND (initialized as 1) as it parses command line options. When an option requires an argument, we know that argument is placed into the variable $OPTARG. When the end of options is encountered, getopts exists with a return value greater than zero and $OPTIND is set to the index of the first non-option argument and the name is set to "?"! It is for this reason, that we SHIFT by this value - 1. Shift removes n string from the positional paramters list, so that from this point, $1 will refer to the first non-option argument passed to the script!
+#+BEGIN_SRC shell
+while getopts ":a:bc:" opt; do
+    case "${opt}" in
+	a) printf 'Got a: "%s"\n' "$OPTARG" ;;
+	b) printf "I takes me no arguments\n" ;;
+	c) printf 'Got c: "%s"\n' "$OPTARG" ;;
+	:) echo 'missing argument!' >&2
+	   exit 1 ;;
+	\?) echo 'invalid option!' >&2
+	    exit 1
+    esac
+done
+shift $((OPTIND - 1))
+printf "%s\n" "$1"
+#+END_SRC
+#+BEGIN_SRC console
+$ example -a hello -b -c world my_directory
+>>> Got a: "hello"
+>>> "I takes me no arguments"
+>>> Got c: "world"
+>>> my_directory
+#+END_SRC console
