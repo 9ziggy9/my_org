@@ -1,0 +1,52 @@
+:PROPERTIES:
+:ID:       35159399-3d94-48b6-80f6-47aa3afdd6d6
+:END:
+#+title: Shell
+* shebangs
+A shebang declaration allows us to circumvent the need to provide an interpreter for an executable file. It is a declaration made at the top of a file with the characters "crunch" and "bang"; #!
+** Reference by absolute location
+If we want to specifically target an interpreter on our system, we provide it's absolute path to the shebang. This reference is $PATH independent.
+#+BEGIN_SRC console
+#!/usr/bin
+#+END_SRC
+** Reference by absolute path
+Instead of directly targeting an absolute path to an interpreter, we can also reference the systems environment and extract the first instance of the interpreter in user $PATH variable.
+#+BEGIN_SRC console
+#!/usr/bin/env bash
+#+END_SRC
+the choice of bash in this case will correspond to  that which is retrieved from the "which" command.
+#+BEGIN_SRC console
+$ which bash
+>>> /usr/bin/bash
+#+END_SRC
+
+* getopt
+** Catching any parse error with a *
+The optstring uses colons to indicate a value is expected following a flag, otherwise it is a simple flag.
+#+BEGIN_SRC shell
+usage () { echo "Hello, usage!"; exit 1; }
+
+while getopts "a:bc:" opt; do
+    case "${opt}" in
+          a) printf 'Got a: "%s"\n' "$OPTARG" ;;
+          b) printf "I takes me no arguments" ;;
+          c) printf 'Got b: "%s"\n' "$OPTARG" ;;
+          *) usage
+    esac
+done
+#+END_SRC
+** Catching missing params  with : and invalid options with ?
+If the optstring is prepended with a : we decouple missing param errors and invalid option errors and catch them with : and ? respectively. Note that to test for a string in the switch case, we have to either escape the ? like \? or use quotes "?". Important to note that >&2 is a redirect to stderr; >&1 would be stdout. 
+#+BEGIN_SRC shell
+while getopts ":a:bc:" opt; do
+    case "${opt}" in
+          a) printf 'Got a: "%s"\n' "$OPTARG" ;;
+          b) printf "I takes me no arguments" ;;
+          c) printf 'Got b: "%s"\n' "$OPTARG" ;;
+          :) echo 'missing argument!' >&2
+            exit 1 ;;
+          \?) echo 'invalid option!' >&2
+              exit 1
+    esac
+done
+#+END_SRC
